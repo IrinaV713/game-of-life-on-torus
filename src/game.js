@@ -7,7 +7,7 @@ var grid = new Array(rows);
 var nextGrid = new Array(rows);
 
 var timer;
-var reproductionTime = 100;
+var frequency = 500;
 
 function initializeGrids() {
     for (var i = 0; i < rows; i++) {
@@ -43,15 +43,12 @@ function initialize() {
 
 
 function createTable() {
-    var gridContainer = document.getElementById('gridContainer');
-    if (!gridContainer) {
-        console.error("Problem: No div for the drid table!");
-    }
+    var gridElement = document.getElementById('grid');
     var table = document.createElement("table");
     
     for (var i = 0; i < rows; i++) {
         var tr = document.createElement("tr");
-        for (var j = 0; j < cols; j++) {//
+        for (var j = 0; j < cols; j++) {
             var cell = document.createElement("td");
             cell.setAttribute("id", i + "_" + j);
             cell.setAttribute("class", "dead");
@@ -60,10 +57,10 @@ function createTable() {
         }
         table.appendChild(tr);
     }
-    gridContainer.appendChild(table);
-    }
+    gridElement.appendChild(table);
+}
 
-    function cellClickHandler() {
+function cellClickHandler() {
         var rowcol = this.id.split("_");
         var row = rowcol[0];
         var col = rowcol[1];
@@ -76,10 +73,9 @@ function createTable() {
             this.setAttribute("class", "live");
             grid[row][col] = 1;
         }
-        
-    }
+}
 
-    function updateView() {
+function updateView() {
         for (var i = 0; i < rows; i++) {
             for (var j = 0; j < cols; j++) {
                 var cell = document.getElementById(i + "_" + j);
@@ -90,7 +86,7 @@ function createTable() {
                 }
             }
         }
-    }
+}
 
 function setupControlButtons() {
     var startButton = document.getElementById('start');
@@ -119,8 +115,6 @@ function randomButtonHandler() {
 }
 
 function clearButtonHandler() {
-    console.log("Clear the game: stop playing, clear the grid");
-    
     playing = false;
     var startButton = document.getElementById('start');
     startButton.innerHTML = "Start";    
@@ -140,12 +134,10 @@ function clearButtonHandler() {
 
 function startButtonHandler() {
     if (playing) {
-        console.log("Pause the game");
         playing = false;
         this.innerHTML = "Continue";
         clearTimeout(timer);
     } else {
-        console.log("Continue the game");
         playing = true;
         this.innerHTML = "Pause";
         play();
@@ -155,7 +147,7 @@ function startButtonHandler() {
 function play() {
     computeNextGen();
     if (playing) {
-        timer = setTimeout(play, reproductionTime);
+        timer = setTimeout(play, frequency);
     }
 }
 
