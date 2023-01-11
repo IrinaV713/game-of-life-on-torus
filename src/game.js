@@ -110,8 +110,8 @@ function randomButtonHandler() {
 
 function clearButtonHandler() {
     isGame = false;
-    var btnStart = document.getElementById('start');
-    btnStart.innerHTML = "<b>Start</b>";    
+    var start = document.getElementById('start');
+    start.innerHTML = "<b>Start</b>";    
     clearTimeout(timer);
     
     for (var i = 0; i < rows; i++) {
