@@ -1,43 +1,47 @@
-var rows = 38;
-var cols = 100;
+const rows = 38;
+const cols = 100;
+const frequency = 500;
 
-var playing = false;
-
-var grid = new Array(rows);
-var nextGrid = new Array(rows);
-
+var isGame = false;
 var timer;
-var frequency = 500;
+var grid = new Array(rows);
+var next = new Array(rows);
 
-function initializeGrids() {
+function initializeField() {
     for (var i = 0; i < rows; i++) {
         grid[i] = new Array(cols);
-        nextGrid[i] = new Array(cols);
+        next[i] = new Array(cols);
+    }
+    for (var i = 0; i < rows; i++) {
+        for (var j = 0; j < cols; j++) {
+            grid[i][j] = 0;
+            next[i][j] = 0;
+        }
     }
 }
 
-function resetGrids() {
+/*function resetGrids() {
     for (var i = 0; i < rows; i++) {
         for (var j = 0; j < cols; j++) {
             grid[i][j] = 0;
             nextGrid[i][j] = 0;
         }
     }
-}
+}*/
 
 function copyAndResetGrid() {
     for (var i = 0; i < rows; i++) {
         for (var j = 0; j < cols; j++) {
-            grid[i][j] = nextGrid[i][j];
-            nextGrid[i][j] = 0;
+            grid[i][j] = next[i][j];
+            next[i][j] = 0;
         }
     }
 }
 
-function initialize() {
+function init() {
     createTable();
-    initializeGrids();
-    resetGrids();
+    initializeField();
+    //resetGrids();
     setupControlButtons();
 }
 
@@ -45,14 +49,13 @@ function initialize() {
 function createTable() {
     var gridElement = document.getElementById('grid');
     var table = document.createElement("table");
-    
     for (var i = 0; i < rows; i++) {
         var tr = document.createElement("tr");
         for (var j = 0; j < cols; j++) {
             var cell = document.createElement("td");
-            cell.setAttribute("id", i + "_" + j);
+            cell.setAttribute("id", i + "-" + j);
             cell.setAttribute("class", "dead");
-            cell.onclick = cellClickHandler;
+            cell.onclick = changeState;
             tr.appendChild(cell);
         }
         table.appendChild(tr);
@@ -60,32 +63,32 @@ function createTable() {
     gridElement.appendChild(table);
 }
 
-function cellClickHandler() {
-        var rowcol = this.id.split("_");
-        var row = rowcol[0];
-        var col = rowcol[1];
+function changeState() {
+    var coords = this.id.split("-");
+    var x = coords[0];
+    var y = coords[1];
         
-        var classes = this.getAttribute("class");
-        if(classes.indexOf("live") > -1) {
-            this.setAttribute("class", "dead");
-            grid[row][col] = 0;
-        } else {
-            this.setAttribute("class", "live");
-            grid[row][col] = 1;
-        }
+    var classes = this.getAttribute("class");
+    if(classes.indexOf("live") > -1) {
+        this.setAttribute("class", "dead");
+        grid[x][y] = 0;
+    } else {
+        this.setAttribute("class", "live");
+        grid[x][y] = 1;
+    }
 }
 
-function updateView() {
-        for (var i = 0; i < rows; i++) {
-            for (var j = 0; j < cols; j++) {
-                var cell = document.getElementById(i + "_" + j);
-                if (grid[i][j] == 0) {
-                    cell.setAttribute("class", "dead");
-                } else {
-                    cell.setAttribute("class", "live");
-                }
+function updateField() {
+    for (var i = 0; i < rows; i++) {
+        for (var j = 0; j < cols; j++) {
+            var cell = document.getElementById(i + "-" + j);
+            if (grid[i][j] == 0) {
+                cell.setAttribute("class", "dead");
+            } else {
+                cell.setAttribute("class", "live");
             }
         }
+    }
 }
 
 function setupControlButtons() {
@@ -100,13 +103,14 @@ function setupControlButtons() {
 }
 
 function randomButtonHandler() {
-    if (playing) return;
+    if (isGame) return;
     clearButtonHandler();
+
     for (var i = 0; i < rows; i++) {
         for (var j = 0; j < cols; j++) {
-            var isLive = Math.round(Math.random());
-            if (isLive == 1) {
-                var cell = document.getElementById(i + "_" + j);
+            var randomLife = Math.round(Math.random());
+            if (randomLife == 1) {
+                var cell = document.getElementById(i + "-" + j);
                 cell.setAttribute("class", "live");
                 grid[i][j] = 1;
             }
@@ -115,12 +119,21 @@ function randomButtonHandler() {
 }
 
 function clearButtonHandler() {
-    playing = false;
-    var startButton = document.getElementById('start');
-    startButton.innerHTML = "Start";    
+    isGame = false;
+    var btnStart = document.getElementById('start');
+    btnStart.innerHTML = "<b>Start</b>";    
     clearTimeout(timer);
     
-    var cellsList = document.getElementsByClassName("live");
+    for (var i = 0; i < rows; i++) {
+        for (var j = 0; j < cols; j++) {
+            var cell = document.getElementById(i + "-" + j);
+            cell.setAttribute("class", "dead");
+            grid[i][j] = 0;
+            next[i][j] = 0;
+        }
+    }
+
+    /*var cellsList = document.getElementsByClassName("live");
     var cells = [];
     for (var i = 0; i < cellsList.length; i++) {
         cells.push(cellsList[i]);
@@ -128,84 +141,95 @@ function clearButtonHandler() {
     
     for (var i = 0; i < cells.length; i++) {
         cells[i].setAttribute("class", "dead");
-    }
-    resetGrids;
+    }*/
+    //resetGrids;
 }
 
 function startButtonHandler() {
-    if (playing) {
-        playing = false;
-        this.innerHTML = "Continue";
+    if (isGame) {
+        isGame = false;
+        this.innerHTML = "<b>Continue</b>";
         clearTimeout(timer);
     } else {
-        playing = true;
-        this.innerHTML = "Pause";
-        play();
+        isGame = true;
+        this.innerHTML = "<b>Pause</b>";
+        run();
     }
 }
 
-function play() {
-    computeNextGen();
-    if (playing) {
-        timer = setTimeout(play, frequency);
+function run() {
+    nextGeneration();
+    if (isGame) {
+        timer = setTimeout(run, frequency);
     }
 }
 
-function computeNextGen() {
+function nextGeneration() {
     for (var i = 0; i < rows; i++) {
         for (var j = 0; j < cols; j++) {
-            applyRules(i, j);
+            cellNextState(i, j);
         }
     }
     copyAndResetGrid();
-    updateView();
+    updateField();
 }
 
-
-function applyRules(row, col) {
-    var numNeighbors = countNeighbors(row, col);
-    if (grid[row][col] == 1) {
-        if (numNeighbors < 2) {
-            nextGrid[row][col] = 0;
-        } else if (numNeighbors == 2 || numNeighbors == 3) {
-            nextGrid[row][col] = 1;
-        } else if (numNeighbors > 3) {
-            nextGrid[row][col] = 0;
+function cellNextState(x, y) {
+    var alive = getAliveNeighbors(x, y);
+    if (grid[x][y] == 1) {
+        if (alive <= 3 && alive >= 2) {
+            next[x][y] = 1;
+        } 
+        else {
+            next[x][y] = 0;
         }
-    } else if (grid[row][col] == 0) {
-            if (numNeighbors == 3) {
-                nextGrid[row][col] = 1;
+    } else {
+        if(alive == 3){
+            next[x][y] = 1;
+        }
+        else {
+            next[x][y] = 0;
+        }
+    }
+}
+    
+function getAliveNeighbors(x, y) {
+    var count = 0;
+
+    for(var i = x; i <= x+2; i++){
+        for(var j = y; j <= y+2; j++){
+            if(grid[(i - 1 + rows) % rows][(j - 1 + cols) % cols] == 1){
+                if(!((i - 1 + rows) % rows == x && (j - 1 + cols) % cols == y)){
+                    count++;
+                }
             }
         }
     }
-    
-function countNeighbors(row, col) {
-    var count = 0;
-    if (row-1 >= 0) {
-        if (grid[row-1][col] == 1) count++;
+    /*if (x-1 >= 0) {
+        if (grid[x-1][y] == 1) count++;
     }
-    if (row-1 >= 0 && col-1 >= 0) {
-        if (grid[row-1][col-1] == 1) count++;
+    if (x-1 >= 0 && y-1 >= 0) {
+        if (grid[x-1][y-1] == 1) count++;
     }
-    if (row-1 >= 0 && col+1 < cols) {
-        if (grid[row-1][col+1] == 1) count++;
+    if (x-1 >= 0 && y+1 < cols) {
+        if (grid[x-1][y+1] == 1) count++;
     }
-    if (col-1 >= 0) {
-        if (grid[row][col-1] == 1) count++;
+    if (y-1 >= 0) {
+        if (grid[x][y-1] == 1) count++;
     }
-    if (col+1 < cols) {
-        if (grid[row][col+1] == 1) count++;
+    if (y+1 < cols) {
+        if (grid[x][y+1] == 1) count++;
     }
-    if (row+1 < rows) {
-        if (grid[row+1][col] == 1) count++;
+    if (x+1 < rows) {
+        if (grid[x+1][y] == 1) count++;
     }
-    if (row+1 < rows && col-1 >= 0) {
-        if (grid[row+1][col-1] == 1) count++;
+    if (x+1 < rows && y-1 >= 0) {
+        if (grid[x+1][y-1] == 1) count++;
     }
-    if (row+1 < rows && col+1 < cols) {
-        if (grid[row+1][col+1] == 1) count++;
-    }
+    if (x+1 < rows && y+1 < cols) {
+        if (grid[x+1][y+1] == 1) count++;
+    }*/
     return count;
 }
 
-window.onload = initialize;
+window.onload = init;
