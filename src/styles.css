@@ -21,7 +21,6 @@ body {
     justify-content: center;
     align-items: center;
     flex-direction: row;
-    row-gap: 10px;
     text-align: center;
 }
 
@@ -44,9 +43,11 @@ span {
 
 #start, #clear, #random, #load {
     padding: 0.85em;
+    margin-left: 5px;
+    margin-right: 5px;
     border: 2px solid #000000;
     border-radius: 5px;    
-    background: linear-gradient(to bottom, #e3ffe4, #ffffff, #e3ffe4);
+    background: linear-gradient(to bottom, #cffad1, #8effaa, #cfffd0);
 }
 
 td.dead {
