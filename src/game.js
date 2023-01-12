@@ -96,6 +96,7 @@ function buttonSetup() {
 }
 
 async function exitButtonHandler(){
+    window.close
     const response = await fetch('/exitApp');
 }
 
