@@ -5,12 +5,11 @@ const port = 3000;
 app.use(express.static('src'));
 
 app.get('/', function(req, res) {
-    res.send('Application started.')
+    console.log('Application started.')
 });
 
 const server = app.listen(port, () => {
-    console.log(`Listening on port ${port}`); 
-    console.log(`Go to http://localhost:${port}`);
+    console.log(`Listening on port ${port}: http://localhost:${port}`);
 });
 
 process.on('SIGTERM', () => {

@@ -1,5 +1,5 @@
-const rows = 38;
-const cols = 100;
+const rows = 40;
+const cols = 90;
 const frequency = 500;
 
 var isGame = false;
