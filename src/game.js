@@ -7,27 +7,7 @@ var timer;
 var grid = new Array(rows);
 var next = new Array(rows);
 
-function initializeField() {
-    for (var i = 0; i < rows; i++) {
-        grid[i] = new Array(cols);
-        next[i] = new Array(cols);
-    }
-    for (var i = 0; i < rows; i++) {
-        for (var j = 0; j < cols; j++) {
-            grid[i][j] = 0;
-            next[i][j] = 0;
-        }
-    }
-}
-
-function passFieldState() {
-    for (var i = 0; i < rows; i++) {
-        for (var j = 0; j < cols; j++) {
-            grid[i][j] = next[i][j];
-            next[i][j] = 0;
-        }
-    }
-}
+window.onload = init;
 
 function init() {
     createTable();
@@ -36,6 +16,7 @@ function init() {
 }
 
 
+// setting up table and initial grid section
 function createTable() {
     var fieldElement = document.getElementById('field');
     var table = document.createElement("table");
@@ -67,6 +48,31 @@ function changeCellState() {
         grid[x][y] = 1;
     }
 }
+// end of setting up table and initial grid section
+
+
+// field handler section
+function initializeField() {
+    for (var i = 0; i < rows; i++) {
+        grid[i] = new Array(cols);
+        next[i] = new Array(cols);
+    }
+    for (var i = 0; i < rows; i++) {
+        for (var j = 0; j < cols; j++) {
+            grid[i][j] = 0;
+            next[i][j] = 0;
+        }
+    }
+}
+
+function passFieldState() {
+    for (var i = 0; i < rows; i++) {
+        for (var j = 0; j < cols; j++) {
+            grid[i][j] = next[i][j];
+            next[i][j] = 0;
+        }
+    }
+}
 
 function updateField() {
     for (var i = 0; i < rows; i++) {
@@ -80,7 +86,10 @@ function updateField() {
         }
     }
 }
+// end of field handler section
 
+
+// button handler section
 function buttonSetup() {
     var startButton = document.getElementById('startBtn');
     startButton.onclick = startButtonHandler;
@@ -135,7 +144,10 @@ function startButtonHandler() {
         run();
     }
 }
+// end of button handler section
 
+
+// game logic section
 function run() {
     nextGeneration();
     if (isGame) {
@@ -185,5 +197,4 @@ function getAliveNeighbors(x, y) {
     }
     return count;
 }
-
-window.onload = init;
+// end of game logic section
