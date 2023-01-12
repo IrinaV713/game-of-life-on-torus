@@ -19,25 +19,3 @@ io.on('connection', function(socket) {
         process.exit(0);
     });
 });
-
-/*app.get('/', function(req, res) {
-    res.send('Application started.')
-});
-
-const server = app.listen(port, () => {
-    console.log(`Listening on port ${port}: http://localhost:${port}`);
-});
-
-const io = require('socket.io')(server);
-io.on('connection', client => {
-    client.on('event', data => {});
-    client.on('disconnect', () => { });
-});*/
-
-/*
-process.on('SIGTERM', () => {
-    server.close(() => {
-        console.log('Application closed.');     
-        process.exit(0);
-    });
-});*/
