@@ -11,4 +11,4 @@ Open terminal there and run a following command:
 $ node app.js
 ```
 
-Then open http://localhost:3000/ and be free to experiment!
+Then open the link you'll receive and be free to experiment!
