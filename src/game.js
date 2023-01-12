@@ -63,7 +63,7 @@ function changeCellState() {
         this.setAttribute("class", "dead");
         grid[x][y] = 0;
     } else {
-        this.setAttribute("class", "live");
+        this.setAttribute("class", "alive");
         grid[x][y] = 1;
     }
 }
@@ -75,7 +75,7 @@ function updateField() {
             if (grid[i][j] == 0) {
                 cell.setAttribute("class", "dead");
             } else {
-                cell.setAttribute("class", "live");
+                cell.setAttribute("class", "alive");
             }
         }
     }
@@ -90,6 +90,13 @@ function buttonSetup() {
     
     var randomButton = document.getElementById("random");
     randomButton.onclick = randomButtonHandler;
+    
+    var exitButton = document.getElementById("exit");
+    exitButton.onclick = exitButtonHandler;
+}
+
+function exitButtonHandler(){
+
 }
 
 function randomButtonHandler() {
@@ -101,7 +108,7 @@ function randomButtonHandler() {
             var randomLife = Math.round(Math.random());
             if (randomLife == 1) {
                 var cell = document.getElementById(i + "-" + j);
-                cell.setAttribute("class", "live");
+                cell.setAttribute("class", "alive");
                 grid[i][j] = 1;
             }
         }

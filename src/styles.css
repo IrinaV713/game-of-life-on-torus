@@ -54,6 +54,6 @@ td.dead {
     background-color: transparent;
 }
 
-td.live {
+td.alive {
     background-color: #ff0022;
 }
