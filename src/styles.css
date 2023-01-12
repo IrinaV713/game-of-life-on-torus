@@ -41,7 +41,7 @@ span {
     font-weight: bold;
 }
 
-#start, #clear, #random, #exit {
+#startBtn, #clearBtn, #randomBtn, #exitBtn {
     padding: 0.85em;
     margin-left: 5px;
     margin-right: 5px;

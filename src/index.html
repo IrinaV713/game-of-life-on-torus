@@ -7,10 +7,10 @@
         <script src="/socket.io/socket.io.js"></script>
         <script>
             var socket = io();
-            $('#exit').click(function () { 
-                alert("click")
+            function exitApp(){
+                console.log('User clicks Exit');
                 socket.emit('exit');
-            });
+            }
         </script>
     </head>
 
@@ -29,10 +29,10 @@
     <div id="field"></div>
 
     <div class="ctrl_buttons">
-        <button id="start"><span>Start</span></button>
-        <button id="clear"><span>Clear the field</span></button>
-        <button id="random"><span>Random population</span></button>
-        <button id="exit"><span>Exit</span></button>
+        <button id="startBtn"><span>Start</span></button>
+        <button id="clearBtn"><span>Clear the field</span></button>
+        <button id="randomBtn"><span>Random population</span></button>
+        <button id="exitBtn" onclick="exitApp()"><span>Exit</span></button>
     </div>
         
     <script src="game.js"></script>    

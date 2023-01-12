@@ -82,13 +82,13 @@ function updateField() {
 }
 
 function buttonSetup() {
-    var startButton = document.getElementById('start');
+    var startButton = document.getElementById('startBtn');
     startButton.onclick = startButtonHandler;
     
-    var clearButton = document.getElementById('clear');
+    var clearButton = document.getElementById('clearBtn');
     clearButton.onclick = clearButtonHandler;
     
-    var randomButton = document.getElementById("random");
+    var randomButton = document.getElementById("randomBtn");
     randomButton.onclick = randomButtonHandler;
 }
 
@@ -110,8 +110,8 @@ function randomButtonHandler() {
 
 function clearButtonHandler() {
     isGame = false;
-    var start = document.getElementById('start');
-    start.innerHTML = "<b>Start</b>";    
+    var startBtn = document.getElementById('startBtn');
+    startBtn.innerHTML = "<b>Start</b>";    
     clearTimeout(timer);
     
     for (var i = 0; i < rows; i++) {

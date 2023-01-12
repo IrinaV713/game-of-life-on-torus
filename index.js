@@ -7,6 +7,7 @@ app.use(express.static('src'));
 const server = require('http').createServer(app);
 
 server.listen(port, () => {
+    console.log('Application started.')
     console.log(`Listening on port ${port}: http://localhost:${port}`);
 });
 
@@ -15,6 +16,7 @@ io.on('connection', function(socket) {
     socket.on('exit', () => {
         server.close();
         console.log('Application closed.');
+        process.exit(0);
     });
 });
 
