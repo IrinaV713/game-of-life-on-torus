@@ -57,7 +57,7 @@ function initializeField() {
         grid[i] = new Array(cols);
         next[i] = new Array(cols);
     }
-    for (var i = 0; i < rows; i++) {
+    for (i = 0; i < rows; i++) {
         for (var j = 0; j < cols; j++) {
             grid[i][j] = 0;
             next[i][j] = 0;
