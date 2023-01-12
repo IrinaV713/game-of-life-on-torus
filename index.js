@@ -8,13 +8,21 @@ app.get('/', function(req, res) {
     console.log('Application started.')
 });
 
-const server = app.listen(port, () => {
-    console.log(`Listening on port ${port}: http://localhost:${port}`);
-});
-
-process.on('SIGTERM', () => {
+app.get('/exitApp', (req, res) => {
     server.close(() => {
         console.log('Application closed.');     
         process.exit(0);
     });
 });
+
+const server = app.listen(port, () => {
+    console.log(`Listening on port ${port}: http://localhost:${port}`);
+});
+
+/*
+process.on('SIGTERM', () => {
+    server.close(() => {
+        console.log('Application closed.');     
+        process.exit(0);
+    });
+});*/

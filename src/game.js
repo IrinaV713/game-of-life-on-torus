@@ -95,8 +95,8 @@ function buttonSetup() {
     exitButton.onclick = exitButtonHandler;
 }
 
-function exitButtonHandler(){
-
+async function exitButtonHandler(){
+    const response = await fetch('/exitApp');
 }
 
 function randomButtonHandler() {
