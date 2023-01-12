@@ -4,20 +4,33 @@ const port = 3000;
 
 app.use(express.static('src'));
 
-app.get('/', function(req, res) {
-    console.log('Application started.')
+const server = require('http').createServer(app);
+
+server.listen(port, () => {
+    console.log(`Listening on port ${port}: http://localhost:${port}`);
 });
 
-app.get('/exitApp', (req, res) => {
-    server.close(() => {
-        console.log('Application closed.');     
-        process.exit(0);
+const io = require('socket.io')(server);
+io.on('connection', function(socket) { 
+    socket.on('exit', () => {
+        server.close();
+        console.log('Application closed.');
     });
+});
+
+/*app.get('/', function(req, res) {
+    res.send('Application started.')
 });
 
 const server = app.listen(port, () => {
     console.log(`Listening on port ${port}: http://localhost:${port}`);
 });
+
+const io = require('socket.io')(server);
+io.on('connection', client => {
+    client.on('event', data => {});
+    client.on('disconnect', () => { });
+});*/
 
 /*
 process.on('SIGTERM', () => {

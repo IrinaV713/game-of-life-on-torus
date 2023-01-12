@@ -90,14 +90,6 @@ function buttonSetup() {
     
     var randomButton = document.getElementById("random");
     randomButton.onclick = randomButtonHandler;
-    
-    var exitButton = document.getElementById("exit");
-    exitButton.onclick = exitButtonHandler;
-}
-
-async function exitButtonHandler(){
-    window.close
-    const response = await fetch('/exitApp');
 }
 
 function randomButtonHandler() {

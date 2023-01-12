@@ -3,7 +3,15 @@
     <head>
         <meta charset = "UTF-8" />
         <title>Conway's Game of Life on Torus</title>
-        <link rel="stylesheet" href="styles.css">    
+        <link rel="stylesheet" href="styles.css">
+        <script src="/socket.io/socket.io.js"></script>
+        <script>
+            var socket = io();
+            $('#exit').click(function () { 
+                alert("click")
+                socket.emit('exit');
+            });
+        </script>
     </head>
 
     <body>
@@ -14,7 +22,7 @@
             <li>If you want to pause on current generation, click <b>Pause</b>. Click <b>Continue</b> to start again.</li>
             <li>If you want to start with random population, click <b>Random population</b> button.</li>
             <li>You can click <b>Clear the field</b> to clear all.</li>
-            <li>You can click <b>Exit</b> to exit application.</li>
+            <li>Click <b>Exit</b> and close the tab to exit application.</li>
         </ul>
     </div>
     
